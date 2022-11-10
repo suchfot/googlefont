@@ -2,8 +2,11 @@
 ini_set('display_errors',1);
 if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
    
-    preg_match('#family\=(.*)\:#U',$_REQUEST['googlecssurl'],$fontname);
-   
+    preg_match('#family\=(.*)(:|%)#U',$_REQUEST['googlecssurl'],$fontname);
+
+
+
+   // https://fonts.googleapis.com/css?family=Merriweather%3A400%7CLibre+Baskerville%3A400italic&ver=1667561426
     $dateiname = md5($_REQUEST['googlecssurl'])."_".$fontname[1].".css";
     if( !is_file("temp/".$dateiname) ){
          copy($_REQUEST['googlecssurl'],"temp/".$dateiname);
