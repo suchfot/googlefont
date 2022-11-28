@@ -2,8 +2,7 @@
 ini_set('display_errors',1);
 if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
    
-    preg_match('#family\=(.*)(:|%)#U',$_REQUEST['googlecssurl'],$fontname);
-
+    preg_match('#family\=(.*)(\&|:|%|\||\+)#U',$_REQUEST['googlecssurl'],$fontname);
 
 
    // https://fonts.googleapis.com/css?family=Merriweather%3A400%7CLibre+Baskerville%3A400italic&ver=1667561426
@@ -20,9 +19,6 @@ if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
 
     $inhalt = file_get_contents("temp/".$dateiname);
     preg_match_all('#url\((.*)\)#U',$inhalt,$urls);
-    echo '<pre>';
-    print_R($urls);
-    echo '</pre>';
     foreach($urls[1] as $key => $fontfile){
         $extension = explode(".",$fontfile);
         $newfontfile = $font_dir.'/'.$fontname[1].'-'.$key.'.'.end( $extension);
@@ -39,7 +35,7 @@ if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
 ?>
 <!DOCTYPE html>
 <html>
-<title>W3.CSS</title>
+<title>Load Google Font</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <body>
@@ -47,10 +43,20 @@ if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
 <header class="w3-container w3-red">
   <h1>Google Fonts lokal einbinden</h1>
 </header>
-
+<div class="w3-container">
+    <?php if( isset( $urls[1] ) ):?>
+        <p>Es wurden <?php print count($urls[1])?> Fonts geladen und unter dem Ordner 
+        <strong><?php print $fontname[1] ?></strong>
+        gespeichert
+        </p>
+        <?php endif?>
+</div>
 
 <div class="w3-container">
  <form method="post" target="_self">
+    <?php if($_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ):?>
+        <input type="requesturl" class="w3-input" value="<?php print $_REQUEST['googlecssurl']?>" />
+    <?php endif?>    
     <input type="text" name="googlecssurl" placeholder="google font css url" class="w3-input"/>
     <button class="w3-button">Font laden und CSS erstellen</button>
  </form>
