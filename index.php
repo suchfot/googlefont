@@ -1,8 +1,11 @@
 <?php
 ini_set('display_errors',1);
-if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
+if(  isset($_REQUEST['googlecssurl']) and $_REQUEST['googlecssurl']!=="" ){
    
     preg_match('#family\=(.*)(\&|:|%|\||\+)#U',$_REQUEST['googlecssurl'],$fontname);
+    if(count($fontname)===0){
+        preg_match('#family\=(.*)#',$_REQUEST['googlecssurl'],$fontname);
+    }
 
 
    // https://fonts.googleapis.com/css?family=Merriweather%3A400%7CLibre+Baskerville%3A400italic&ver=1667561426
@@ -54,7 +57,7 @@ if(  $_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ){
 
 <div class="w3-container">
  <form method="post" target="_self">
-    <?php if($_REQUEST['googlecssurl'] and $_REQUEST['googlecssurl']!=="" ):?>
+    <?php if(isset($_REQUEST['googlecssurl']) and $_REQUEST['googlecssurl']!=="" ):?>
         <input type="requesturl" class="w3-input" value="<?php print $_REQUEST['googlecssurl']?>" />
     <?php endif?>    
     <input type="text" name="googlecssurl" placeholder="google font css url" class="w3-input"/>
